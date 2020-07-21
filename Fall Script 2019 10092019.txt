@@ -1,0 +1,1317 @@
+C: (Pre-Question Section)
+C: Fall 2019 Statewide Survey
+C: edited by JC 10/9/2019
+CATI ON
+SQN RIGHT
+DEFFONT "courier" 2 B
+RAQ Q70G_STRESS Q70H_BALANCE
+
+Q: HELLO -----------------------------------------------------------
+T: 1 1
+ 
+ Hello, my name is ______________ (YOUR NAME) and I am a student
+ at St. Cloud State University. I am calling from our survey
+ research center on campus. We are conducting a study of
+ Minnesota residents about their views relating to state
+ and national issues.
+
+ We are not asking for contributions or trying to sell you
+ anything. Your telephone number was drawn by a computer in a
+ random sample of the state.  [HIT ANY KEY TO CONTINUE]
+
+ [IF INTERVIEW IS A RESTART, MAKE SURE YOU HAVE PROPER RESPONDENT,
+ REINTRODUCE YOURSELF AND SAY SOMETHING LIKE--    
+
+ We previously started this interview and couldn't finish it
+ at the time. May we finish it now?
+
+ IF RESPONDENT WANTS TO KNOW WHO THE INTERVIEW IS FOR YOU CAN
+ TELL THEM IT IS FOR ST. CLOUD STATE UNIVERSITY.   
+ YOU CAN HIT CONTROL/END AT ANY TIME TO TERMINATE
+ AN INTERVIEW, PUT MESSAGE FOR CALLBACKS, INCOMPLETES,
+ REFUSALS, ETC.]
+
+T: 
+
+I:
+CMDI acode "AreaCode"
+RespACode = acode
+CMDI pnum "PhoneNum"
+RespPhoneNum = pnum
+CMDI TIMEZONE "Time" 1
+CMDI COUNTY "Fips" 1
+CMDI REPLI "repli" 1
+CMDI TYPE "TypeSample" 1
+
+SGENDER = 0
+
+
+COLOR RED 1 34 1 75
+COLOR GREEN 2 2 2 33
+COLOR RED  2 35 2 46
+COLOR GREEN 2 2 10 75
+COLOR GREEN 10 2 10 30
+COLOR RED 10 31 10 70
+COLOR RED 12 2 13 70
+COLOR GREEN 15 2 16 70
+COLOR RED 18 2 22 75
+KEY
+IF (TYPE = "WIRELESS RDD") SKIPTO HELLO2B
+IF (TYPE = "SMART CELL") SKIPTO HELLO2B
+
+Q: HELLO1 --------------------------------------------
+C: If phone number is from Landline sample
+T: 1 1
+
+ Is this your residential phone, and is it a landline phone?
+ [IF NO]
+ Is this your personal cell phone, not a business phone?
+ [IF NOT PERSONAL CELL PHONE, TERMINATE BY SAYING]
+ I'm sorry I have the wrong place. [END CALL WITH CTRL-END]
+T: 8 10
+ 1. YES, IT IS A RESIDENTIAL LANDLINE PHONE
+ 2. NO, IT IS A PERSONAL CELL PHONE
+
+I:
+COLOR GREEN 2 2 2 75
+COLOR RED 3 2 3 8
+COLOR GREEN 4 2 4 100
+COLOR RED 5 2 5 70
+COLOR GREEN 6 2 6 35
+COLOR RED 6 36 6 75
+LOCATE 8 2 1 Natural
+SELECT 2 1 1 0 OFF ON
+IF (ANSWER=1) TYPEPHON = 1
+IF (ANSWER=2) TYPEPHON = 2
+IF (TYPEPHON = 2) SKIPTO HELLO2B
+
+Q: GENDER ---------------------------------------
+c: ONLY ASK THIS FOR LANDLINE SURVEYS
+T:
+
+ For the purposes of this survey, I need to ask if you are male or female?
+ [IF RESPONDENT INDICATES “OTHER” OR “TRANS” OR “THIRD GENDER” OR “NEITHER”, 
+ RESPOND “Thank you, I’ve recorded your response.” AND CHOOSE 'OTHER, RESIDENTIAL 
+ LANDLINE PHONE']
+T: 12 17
+ 1. MALE, RESIDENTIAL LANDLINE PHONE
+ 2. FEMALE, RESIDENTIAL LANDLINE PHONE
+ 3. OTHER, RESIDENTIAL LANDLINE PHONE
+
+I:
+COLOR GREEN 2 2 6 80
+COLOR RED 3 2 3 80
+COLOR RED 4 2 4 9
+COLOR GREEN 4 10 4 51
+COLOR RED 4 52 4 80
+COLOR RED 5 2 5 80
+LOCATE 12 5 1 Natural
+SELECT 5 1 1 0 OFF ON
+IF (ANSWER=1) SGENDER=1
+IF (ANSWER=2) SGENDER=2
+IF (ANSWER=3) SGENDER=3
+IF (ANSWER=4) SGENDER=4
+IF (ANSWER=5) SGENDER=5
+SKIPTO ETHICS
+
+Q: HELLO2B ---------------------
+T:
+
+ Is this a personal cell phone, that is not a business phone?
+ [IF NOT A PERSONAL CELL PHONE] Is this a residential landline phone?
+ [IF BUSINESS PHONE, TERMINATE WITH, E.G.;]
+ I'm sorry I have a wrong number. [END CALL WITH CTRL-END]
+
+ For the purposes of this survey, I need to ask if you are male or female?
+ [IF RESPONDENT INDICATES “OTHER” OR “TRANS” OR “THIRD GENDER” OR “NEITHER”, 
+ RESPOND “Thank you, I’ve recorded your response.” AND CHOOSE 'OTHER, 
+ PERSONAL CELL PHONE' OR 'OTHER, RESIDENTIAL LANDLINE PHONE' BASED ON PHONE TYPE]
+T: 12 17
+ 1. MALE, PERSONAL CELL PHONE
+ 2. FEMALE, PERSONAL CELL PHONE
+ 3. OTHER, PERSONAL CELL PHONE
+ 4. MALE, RESIDENTIAL LANDLINE PHONE
+ 5. FEMALE, RESIDENTIAL LANDLINE PHONE
+ 6. OTHER, RESIDENTIAL LANDLINE PHONE
+
+I:
+COLOR GREEN 2 2 2 75
+COLOR RED 3 2 3 32
+COLOR GREEN 3 33 3 75
+COLOR RED 4 2 4 60
+COLOR GREEN 5 2 5 34
+COLOR RED 5 35 5 65
+COLOR GREEN 7 2 7 75
+COLOR RED 8 2 10 90
+COLOR GREEN 9 10 9 50
+LOCATE 12 6 1 Natural
+SELECT 6 1 1 0 OFF ON
+IF (ANSWER<4) TYPEPHON=2
+IF (ANSWER>3) TYPEPHON=1
+IF (ANSWER=1) SGENDER=1
+IF (ANSWER=4) SGENDER=1
+IF (ANSWER=2) SGENDER=3
+IF (ANSWER=5) SGENDER=3
+IF (ANSWER=3) SGENDER=5
+IF (ANSWER=6) SGENDER=5
+IF (TYPEPHON=1) SKIPTO ETHICS
+
+Q: HELLO2C --------------------
+T:
+
+ Are you age 18 or older and a resident of Minnesota?
+ [IF YES TO BOTH, PRESS ANY KEY TO CONTINUE]
+ [IF TOO YOUNG OR NOT A RESIDENT, END CALL BY SAYING]
+ I'm sorry I have a wrong number.
+ [THEN END CALL WITH CTRL-END]
+
+I:
+COLOR GREEN 2 2 2 65
+COLOR RED 3 2 3 65
+COLOR RED 3 2 5 65
+COLOR GREEN 5 2 5 35
+COLOR RED 6 2 6 35
+KEY
+
+Q: DRIVING ---------------------------------------
+C: Only ask this for cell phone surveys
+T:
+
+ It is important that we interview you when you are not driving or in
+ a situation where you would be distracted by events around you. Are you
+ in a safe situation to answer our questions?
+ [IF YES-START INTERVIEW]
+ Before we begin the 10-15 minute survey, please note that I
+ am happy to answer any questions about the study either now or
+ later. This interview is completely voluntary, so if we come
+ to any question that you don't want to answer, just let me know and
+ we'll go on to the next question.
+ [PRESS ANY KEY TO CONTINUE]
+ [IF THIS IS NOT A GOOD TIME FOR INTERVIEW]
+ When may I call back to interview you?
+ [HIT CTRL/END, THEN RECORD TIME AND DAY FOR CALL-BACK]
+
+I:
+COLOR GREEN 2 2 4 77
+COLOR RED 5 2 5 30
+COLOR GREEN 6 2 9 77
+COLOR GREEN 10 2 10 34
+COLOR RED 11 2 11 70
+COLOR RED 12 2 13 50
+COLOR GREEN 13 2 14 77
+COLOR RED 14 2 15 70
+KEY
+SKIPTO Q1DIRMN
+
+Q: ETHICS ----------------------------
+C: Only for landline survey
+T:
+
+ [IF THIS IS THE SELECTED PERSON, START INTERVIEW]
+ [OR WHEN SELECTED PERSON ANSWERS, REPEAT INTRO]
+ Before we begin the 10-15 minute survey, please note that I
+ am happy to answer any questions about the study either now or
+ later. This interview is completely voluntary, so if we come
+ to any question that you don't want to answer, just let me know and
+ we'll go on to the next question.
+
+ [PRESS ANY KEY TO CONTINUE]
+
+ [IF SELECTED PERSON NOT AVAILABLE]
+ When may I call back to reach him/her?
+ So that I will know who to ask for, what is his/her first name?
+
+ [REPEAT BACK TO BE SURE YOU HAVE IT AND SHOW PRONUNCIATION
+ IF IT IS NEEDED. IF RESPONDENT OBJECTS TO PROVIDING NAME]
+
+ We only need the person's first name; the last name isn't necessary.
+ [HIT CTRL/END, THEN RECORD NAME, TIME AND DAY FOR CALL-BACK]
+
+I:
+COLOR RED 2 2 3 70
+COLOR GREEN 4 2 8 74
+COLOR RED 10 2 10 70
+COLOR RED 12 2 12 70
+COLOR GREEN 13 2 14 74
+COLOR RED 15 2 15 70
+COLOR RED 15 2 17 74
+COLOR GREEN 19 2 19 75
+COLOR RED 20 2 20 70
+KEY
+
+Q: Q1DIRMN ---------------------------------------
+T:
+
+ Let's begin by asking a general question about Minnesota.
+ Do you think things in the state are generally going in the
+ right direction, or do you feel things have gotten off on
+ the wrong track?
+T: 7 10
+ 1. RIGHT DIRECTION
+ 2. NEUTRAL - [VOLUNTEERED]
+ 3. WRONG TRACK
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+QAL THANKYOU
+COLOR GREEN 2 2 5 70
+LOCATE 7 5 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q2PROBMN ------------------
+T:
+
+ What do you think is the single most important problem facing the
+ State of Minnesota today? 
+
+ Answer:
+
+I:
+COLOR GREEN 2 2 3 75
+OPN 5 2 15 80
+
+Q: Q3DIRUS ---------------------------------------
+T:
+
+ Regarding the United States as a whole:
+ Do you think things in the nation are generally going in the
+ right direction, or do you feel things have gotten off on
+ the wrong track?
+T: 7 10
+ 1. RIGHT DIRECTION
+ 2. NEUTRAL - [VOLUNTEERED]
+ 3. WRONG TRACK
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 70
+LOCATE 7 5 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q4PROBUS ------------------
+T:
+
+ And what do you think is the single most important problem facing the
+ United States as a nation right now?
+
+ Answer:
+
+I:
+COLOR GREEN 2 2 3 75
+OPN 5 2 15 80
+
+Q: Q5PARTY1 ----------------------
+T:
+
+ Do you usually consider yourself to be a Democrat, Republican,
+ a member of some other party, or are you an independent who is 
+ not a member of any party?
+T: 7 10
+ 1. DEMOCRAT (DFL)
+ 2. REPUBLICAN (GOP)
+ 3. LIBERTARIAN [VOLUNTEERED]
+ 4. GREEN [VOLUNTEERED]
+ 5. MN INDEPENDENCE PARTY [VOLUNTEERED]
+ 6. TEA PARTY [VOLUNTEERED]
+ 7. OTHER PARTY [VOLUNTEERED]
+ 8. INDEPENDENT, NOT A MEMBER OF ANY PARTY 
+ 9. NOT POLITICAL [VOLUNTEERED]
+88. DON'T KNOW
+99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 75
+LOCATE 7 11 1 Natural
+SELECT 11 1 1 0 OFF ON
+IF (ANSWER = 1) SKIPTO Q6PRIMARY
+IF (ANSWER = 2) SKIPTO Q7IDEOL
+IF (ANSWER = 3) SKIPTO Q7IDEOL
+IF (ANSWER = 4) SKIPTO Q7IDEOL
+IF (ANSWER = 5) SKIPTO Q7IDEOL
+IF (ANSWER = 6) SKIPTO Q7IDEOL
+IF (ANSWER = 7) SKIPTO Q7IDEOL
+IF (ANSWER > 8) SKIPTO Q7IDEOL
+
+Q: Q5APARTY_LEAN ------------------------
+T:
+
+ Although you are an independent, do you usually consider yourself
+ to be closer to the Republicans, Democrats, or some other party?
+T: 7 10
+ 1. DEMOCRAT (DFL)
+ 2. REPUBLICAN (GOP)
+ 3. LIBERTARIAN [VOLUNTEERED]
+ 4. GREEN [VOLUNTEERED]
+ 5. MN INDEPENDENCE PARTY [VOLUNTEERED]
+ 6. TEA PARTY [VOLUNTEERED]
+ 7. NOT CLOSE TO ANY PARTY [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 75
+LOCATE 7 9 1 Natural
+SELECT 9 1 1 0 OFF ON
+IF (ANSWER > 1) SKIPTO Q7IDEOL
+
+Q: Q6PRIMARY ----------------------
+T: 
+
+ Thinking about next year's Democratic presidential primary, if it were 
+ held today for whom would you vote? 
+
+ [DO NOT READ OPTIONS]
+
+T: 6 19 
+ 1. JOE BIDEN
+ 2. ELIZABETH WARREN
+ 3. BERNIE SANDERS
+ 4. KAMALA HARRIS
+ 5. PETE BUTTIGIEG 
+ 6. COREY BOOKER
+ 7. AMY KLOBUCHAR 
+ 8. BETO O'ROURKE
+ 9. JULIAN CASTRO
+ 10. ANDREW YANG
+ 11. OTHER
+ 12. NONE/DO NOT PLAN TO VOTE IN THE PRIMARY
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 75
+COLOR RED 5 2 5 80
+LOCATE 6 14 1 Natural
+SELECT 14 1 1 0 OFF ON
+
+Q: Q7IDEOL -------------------------------------
+T:
+
+ Thinking about your own general approach to politics, do you
+ consider yourself to be very liberal, somewhat liberal, moderate,
+ somewhat conservative, or very conservative?
+T: 6 10
+ 1. VERY LIBERAL
+ 2. SOMEWHAT LIBERAL
+ 3. MODERATE
+ 4. SOMEWHAT CONSERVATIVE
+ 5. VERY CONSERVATIVE
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 80
+LOCATE 6 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q8VOTE
+T:
+
+ What are the chances of your voting in next year's presidential election? 
+ Are you almost certain to vote, will you probably vote, are the chances 
+ 50-50, or do you think you will not vote?
+
+T: 6 10
+ 1. ALMOST CERTAIN
+ 2. PROBABLY VOTE
+ 3. 50-50
+ 4. WON'T VOTE
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 75
+LOCATE 6 6 1 Natural
+SELECT 6 1 1 0 OFF ON
+
+Q: Q9JOB_TRUMP -------------------------
+T:
+
+ Now we have some questions about the job performance of national and
+ state elected officials. How would you rate the overall performance
+ of Donald Trump as President? Would you rate his performance as excellent,
+ pretty good, only fair, poor, or very poor?
+T: 6 10
+ 1. EXCELLENT
+ 2. PRETTY GOOD
+ 3. ONLY FAIR
+ 4. POOR
+ 5. VERY POOR
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 78
+LOCATE 6 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q10JOB_WALZ -----------------------
+T:
+
+ And what about your opinion of Governor Tim Walz's job performance?
+ [REPEAT OPTIONS 1-5 IF NEEDED]
+T: 4 10
+ 1. EXCELLENT
+ 2. PRETTY GOOD
+ 3. ONLY FAIR
+ 4. POOR
+ 5. VERY POOR
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 70
+COLOR RED 3 2 3 50
+LOCATE 4 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q11JOB_KLOBUCHAR ----------
+T:
+
+ How about Senator Amy Klobuchar? [PRONOUNCED "KLOH-buh-SHAR"]
+ [REPEAT OPTIONS 1-5 IF NEEDED]
+
+T: 4 10
+ 1. EXCELLENT
+ 2. PRETTY GOOD
+ 3. ONLY FAIR
+ 4. POOR
+ 5. VERY POOR
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 34
+COLOR RED 3 2 3 70
+LOCATE 4 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q12JOB_SMITH -----------
+T:
+
+ And, finally, Senator Tina Smith? [REPEAT OPTIONS 1-5 IF NEEDED]
+T: 4 10
+ 1. EXCELLENT
+ 2. PRETTY GOOD
+ 3. ONLY FAIR
+ 4. POOR
+ 5. VERY POOR
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 34
+COLOR RED 2 35 2 70
+LOCATE 4 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q20CLIMCHAN1 ---------------------
+T:
+
+ Thank you. Now I have some questions about issues in the news.  
+
+ This first set is about climate and energy. 
+ Which of the following three statements do you personally believe?
+ 
+ [READ OPTIONS 1-3]
+T: 8 11
+ 1. Climate change is happening now, caused mainly by human activities.
+ 2. Climate change is happening now, but caused mainly by natural forces.
+ 3. Climate change is NOT happening now.
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 90
+COLOR RED 7 2 7 80
+LOCATE 8 7 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q21CLIMCHAN2 ---------------------
+T:
+
+ How much do you agree with the following statement, 
+ “It is important that the United States limit greenhouse 
+ gas emissions through an international agreement in order 
+ to slow climate change.”
+
+ [READ 1-2 AND 4-5, DON'T READ NEUTRAL]
+T: 8 14
+ 1. Strongly agree
+ 2. Agree
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Disagree
+ 5. Strongly disagree 
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 90
+COLOR RED 7 2 7 80
+LOCATE 8 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q22CLIMCHAN3 ---------------------
+T:
+
+ From your perspective, how much, if at all, is global climate 
+ change currently affecting Minnesota?
+
+ [READ 1-2 AND 4-5, DON'T READ NEUTRAL]
+T: 6 12
+ 1. A great deal
+ 2. Some
+ 3. NEUTRAL
+ 4. Not much
+ 5. Not at all
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 90
+COLOR RED 5 2 5 80
+LOCATE 6 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q23A_COAL ---------------------
+T:
+
+ Now I have some questions about energy policy. In order to meet increasing 
+ energy demands should Minnesota invest in the following technologies: 
+
+ Additional coal-fired power plants? 
+
+T: 6 10
+ 1. Yes
+ 2. No
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 90
+LOCATE 6 4 1 Natural
+SELECT 4 1 1 0 OFF ON
+
+Q: Q23B_SOLAR ---------------------
+T:
+
+ And what about solar panel farms? 
+
+T: 4 10
+ 1. Yes
+ 2. No
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 90
+LOCATE 4 4 1 Natural
+SELECT 4 1 1 0 OFF ON
+
+Q: Q23C_WIND ---------------------
+T:
+
+ And wind turbine farms? 
+
+T: 4 10
+ 1. Yes
+ 2. No
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 90
+LOCATE 4 4 1 Natural
+SELECT 4 1 1 0 OFF ON
+
+Q: Q23D_NUCLEAR ---------------------
+T:
+
+ What about nuclear power plants? 
+
+T: 4 10
+ 1. Yes
+ 2. No
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 90
+LOCATE 4 4 1 Natural
+SELECT 4 1 1 0 OFF ON
+
+Q: Q23E_FRACKING ---------------------
+T:
+
+ And, finally, what about fracking? 
+
+T: 4 10
+ 1. Yes
+ 2. No
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 90
+LOCATE 4 4 1 Natural
+SELECT 4 1 1 0 OFF ON
+
+Q: Q25INQUIRY
+T: 
+
+ This next set of questions is about other topics in the news.
+
+ Do you approve or disapprove of the House of Representatives conducting an 
+ impeachment inquiry into President Donald Trump?
+
+T: 6 10 
+ 1. Approve	
+ 2. Disapprove	
+ 3. NEUTRAL/DON'T CARE [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 75
+LOCATE 6 6 1 Natural
+SELECT 5 1 1 0 OFF ON
+IF ANS > 1 SKIPTO Q27HEALTHCARE
+
+Q: Q26IMPEACH
+T: 
+
+ Would you support or oppose the removal of President Trump from office 
+ through the impeachment process?
+
+T: 6 10 
+ 1. Support	
+ 2. Oppose	
+ 3. UNSURE/DEPENDS ON THE EVIDENCE [VOLUNTEERED]
+ 4. NO OPINION/DON'T CARE [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 80
+LOCATE 6 6 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q27HEALTHCARE
+T: 
+
+ Thinking now about the issue of healthcare, which of the following approaches
+ do you believe would be best for our country? [READ OPTIONS 1-3] 
+
+T: 5 10
+ 1. The current system in which private insurers are the main providers
+ 2. Expanded Medicare/Medicaid system, but private health plans still available for those who want them
+ 3. Medicare/Medicaid for all, with private health plans abolished
+ 4. SOMETHING ELSE [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 80
+COLOR RED 3 48 3 80
+LOCATE 5 6 1 Natural
+SELECT 6 1 1 0 OFF ON
+
+Q: Q28A_DEMENTIA
+T: 
+
+ Now I have two questions relating to aging and cognitive function. 
+ How much do you agree with the following statements?:
+
+ "Dementia is a normal part of aging." [If people live long enough, 
+ they will eventually develop dementia]
+
+ [READ 1-2 AND 4-5, DON'T READ NEUTRAL]
+
+ [IF NEEDED: “Dementia is an overall term for diseases and conditions characterized 
+ by a decline in memory, language, problem-solving and other thinking skills that affect 
+ a person's ability to perform everyday activities. Memory loss is an example.” – from: 
+ https://www.alz.org/alzheimers-dementia/what-is-dementia]
+
+T: 14 21
+ 1. Strongly agree
+ 2. Agree
+ 3. NOT SURE/NEUTRAL [VOLUNTEERED]
+ 4. Disagree
+ 5. Strongly disagree 
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 6 100
+COLOR RED 7 2 13 100
+LOCATE 14 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q28B_PUZZLES
+T: 
+
+ And what about this statement? 
+ "Doing brain games and puzzles can protect people from developing dementia."
+
+ [READ 1-2 AND 4-5, DON'T READ NEUTRAL]
+
+T: 7 14
+ 1. Strongly agree
+ 2. Agree
+ 3. NOT SURE/NEUTRAL [VOLUNTEERED]
+ 4. Disagree
+ 5. Strongly disagree 
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 90
+COLOR RED 5 2 5 80
+LOCATE 7 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q29WOMENGOVT
+T: 
+
+ Thinking now about the people who serve in government, 
+ do you think this country would be governed better or 
+ governed worse if more women were in political office?
+
+T: 6 10 
+ 1. BETTER	
+ 2. WORSE	
+ 3. NEITHER BETTER NOR WORSE [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 85
+LOCATE 6 6 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q30IMMIG1 ---------------
+T:
+
+ Thank you. Now we have some questions about immigration and its
+ impact on the United States. 
+
+ Would you describe the overall impact of immigrants on the United States as:
+
+ [READ 1-2 AND 4-5; IF RESPONDENT ASKS ABOUT DOCUMENTED VERSUS UNDOCUMENTED, 
+ TELL THEM THAT QUESTION REFERS TO BOTH/ALL IMMIGRANTS]
+
+T: 10 17
+ 1. Very positive
+ 2. Somewhat positive
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat negative
+ 5. Very negative
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 5 90
+COLOR RED 7 2 9 90
+LOCATE 10 17 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q31IMMIG2 ---------------
+T:
+
+ Would you describe the overall impact of immigrants within Minnesota as:
+
+ [READ 1-2 AND 4-5; IF RESPONDENT ASKS ABOUT DOCUMENTED VERSUS UNDOCUMENTED, 
+ TELL THEM THAT QUESTION REFERS TO BOTH/ALL IMMIGRANTS]
+
+T: 10 17
+ 1. Very positive
+ 2. Somewhat positive
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat negative
+ 5. Very negative
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 90
+COLOR RED 4 2 5 90
+LOCATE 10 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q32WALL
+T: 
+
+ Thinking now about border security, would you strongly support, 
+ somewhat support, strongly oppose, or somewhat oppose 
+ building a wall along the entire border with Mexico? 
+
+T: 5 11
+ 1. Strongly support
+ 2. Somewhat support
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat oppose
+ 5. Strongly oppose
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 90
+LOCATE 5 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q33IMMIG3 ---------------
+T:
+
+ For the next set of questions, I will read a statement and then ask how 
+ strongly you agree with the statement.The first statement is:
+
+ 	"I feel immigrants get too much state or federal assistance."
+
+ Do you Strongly Agree, Somewhat Agree, Somewhat Disagree, or Strongly Disagree?
+
+T: 10 17
+ 1. Strongly Agree
+ 2. Somewhat Agree
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat Disagree
+ 5. Strongly Disagree
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 7 90
+LOCATE 10 17 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q34IMMIG4 ---------------
+T:
+
+ The next statement is:
+
+ 	"I feel immigrants have a positive effect on the American economy."
+
+ [REPEAT OPTIONS 1-5 IF NEEDED]
+
+
+T: 10 17
+ 1. Strongly Agree
+ 2. Somewhat Agree
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat Disagree
+ 5. Strongly Disagree
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 4 90
+COLOR RED 6 2 6 90
+LOCATE 10 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q35SOMALI ----------------
+T:
+
+ And the final statement in this section is more specific: 
+
+ 	"I feel Somali immigrants are more difficult to integrate into 
+	 our society because of their religion."
+
+ [REPEAT OPTIONS 1-5 IF NEEDED]
+
+
+T: 10 16
+ 1. Strongly agree
+ 2. Somewhat agree
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat disagree
+ 5. Strongly disagree
+ 88. Don’t know
+ 99. Refused
+
+I:
+COLOR GREEN 2 2 5 90
+COLOR RED 7 2 7 90
+LOCATE 10 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q50NEWS_PREF -------------------
+T:
+
+ Thank you. Now I have a question about your preferences for news media.
+ Which of the following would you say you prefer for getting news?
+
+ [READ OPTIONS 1-5]
+T: 6 13
+ 1. Reading news in a print newspaper
+ 2. Listening to news on the radio
+ 3. Watching news on television
+ 4. Getting news from a social networking site (such as Facebook or Twitter)
+ 5. Getting news from a website or app
+ 6. DID NOT GET NEWS ON ANY PLATFORM [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 75
+COLOR RED 5 2 5 30
+LOCATE 6 8 1 Natural
+SELECT 8 1 1 0 OFF ON
+IF (ANS=1) SKIPTO Q70EMPLOYMENT
+IF (ANS>3) SKIPTO Q70EMPLOYMENT
+IF (ANS=3) SKIPTO Q50B_TV_PREF
+
+Q: Q50A_RADIO_PREF -------------------
+T:
+
+ Which of the following types of radio news would you say you prefer?
+
+ [READ OPTIONS 1-3]
+T: 5 11
+ 1. Traditional news programs, like NPR's Morning Edition or All Things Considered
+ 2. Political talk radio programs, like Rush Limbaugh or Thom Hartmann
+ 3. News updates from music stations
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 75
+COLOR RED 4 2 4 30
+LOCATE 5 5 1 Natural
+SELECT 5 1 1 0 OFF ON
+SKIPTO Q70EMPLOYMENT
+
+Q: Q50B_TV_PREF -------------------
+T:
+
+ Which of the following types of television news outlets would you say you prefer?
+
+ [READ OPTIONS 1-3]
+T: 5 11
+ 1. Traditional network news channels, like ABC, CBS, or NBC
+ 2. Cable news channels, like Fox News, CNN, or MSNBC
+ 3. Comedy news shows, like The Daily Show or Last Week Tonight
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 85
+COLOR RED 4 2 4 30
+LOCATE 5 5 1 Natural
+SELECT 5 1 1 0 OFF ON
+
+Q: Q70EMPLOYMENT ---------------------------------------------------
+T:
+
+ Now we have some questions about work and job satisfaction. Are you . . .
+
+ [READ OPTIONS 1-4]
+T: 5 13
+ 1. Employed full-time [INCLUDE STUDENTS THAT ARE ALSO EMPLOYED FULL TIME]
+ 2. Employed part-time [INCLUDE STUDENTS THAT ARE ALSO EMPLOYED PART TIME]
+ 3. Retired 
+ 4. Not currently employed
+ 5. NONE OF THE ABOVE [VOLUNTEERED]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 75
+COLOR RED 4 2 4 35
+LOCATE 5 8 1 Natural
+SELECT 8 1 1 0 OFF ON
+IF ANS > 2 SKIPTO Q70F_LIFE
+
+Q: Q70A_FORM_EMPL
+T: 
+
+ How would you classify the nature of your income-generating work? 
+ 
+ [READ OPTIONS 1-8; SELECT AS MANY AS APPLY]
+
+T: 5 14
+ 1. Seasonal
+ 2. Short-term or temp job
+ 3. Permanent
+ 4. Fixed-term contract
+ 5. Multiple jobs
+ 6. Self-employed
+ 7. Home-based
+ 8. Office-based
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 75
+COLOR RED 4 2 4 75
+LOCATE 5 10 1 Natural
+SELECT 10 1 8 0 OFF ON
+
+Q: Q70B_SEGMENTATION
+T: 
+
+ How important is it for you to keep your work life and personal life separated?
+
+ [READ OPTIONS 1-6]
+
+T: 5 12
+ 1. Not at all important
+ 2. Slightly important
+ 3. Moderately important
+ 4. Very important
+ 5. Extremely important
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 80
+COLOR RED 4 2 4 75
+LOCATE 5 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q70C_ACTUALITY
+T: 
+
+ How often do you take care of work related business while you are at home?
+
+ [READ OPTIONS 1-5]
+
+T: 5 12
+ 1. Never
+ 2. Rarely
+ 3. Occasionally
+ 4. Often
+ 5. Very often
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 80
+COLOR RED 4 2 4 80
+LOCATE 5 8 1 Natural
+SELECT 8 1 1 0 OFF ON
+
+Q: Q70D_SATISFACTION
+T: 
+
+ On a 1 to 10 scale, with 10 being extremly satisfied, overall, how satisfied 
+ are you with your current job or jobs?
+
+I:
+COLOR GREEN 2 2 6 90
+NUMERIC 1 10 3 0 12 10
+
+Q: Q70E_TECHNOLOGY
+T: 
+
+ How often do you use your phone or computer to remain connected to your job 
+ outside of your scheduled work day?
+
+ [READ OPTIONS 1-5]
+
+T: 4 10
+ 1. Never
+ 2. Rarely
+ 3. Occasionally
+ 4. Often
+ 5. Very often
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 80
+LOCATE 4 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q70G_STRESS
+T: 
+ 
+ On a scale of 1 to 10, with 10 being extremely stressful, how stressful 
+ is your typical workday?
+
+I:
+COLOR GREEN 2 2 6 90
+NUMERIC 1 10 3 0 12 10
+
+Q: Q70H_BALANCE
+T: 
+
+ Would you Stongly Agree, Agree, Disagree, or Strongly Disagree that you 
+ effectively balance the demands of your work and personal life?
+
+T: 4 10
+ 1. Strongly Agree
+ 2. Somewhat Agree
+ 3. NEUTRAL [VOLUNTEERED]
+ 4. Somewhat Disagree
+ 5. Strongly Disagree
+ 88. NO OPINION/DON'T KNOW [VOLUNTEERED]
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 90
+LOCATE 4 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q70F_LIFE 
+T: 
+
+ On a 1 to 10 scale, with 10 being extremly satisfied, how satisfied are you 
+ with the overall life you lead?
+
+I:
+COLOR GREEN 2 2 6 90
+NUMERIC 1 10 3 0 12 10
+
+Q: Q71AGE -----------
+T:
+
+ Thank you. These final questions help us determine if we are getting
+ a representative sample of all Minnesotans.
+ What was your age at your last birthday?
+ 
+ [IF 97 OR OLDER, ENTER "97"]
+
+ 98. DON'T KNOW
+ 99. REFUSED
+ 
+    AGE:
+
+I:
+CPL
+DISPOS=20
+COLOR GREEN 2 2 6 90
+COLOR RED 6 2 9 75
+NUMERIC 18 99 3 0 12 10
+
+Q: Q72EDUCATION ----------------------------------------------------
+T:
+
+ What was the last grade or year in school you completed?
+
+ [DO NOT READ CATEGORIES]
+T: 5 11
+ 1. LESS THAN 12 YEARS
+ 2. 12 YEARS/HIGH SCHOOL GRADUATE
+ 3. POST HIGH SCHOOL TECHNICAL TRAINING [ex. Tech College or Beauty School]
+ 4. SOME COLLEGE, BUT DIDN'T GRADUATE [ex. 13-15 YEARS OF SCHOOL]
+ 5. BACHELOR'S DEGREE/COLLEGE GRADUATE [BA, BS]
+ 6. SOME GRADUATE EDUCATION 
+ 7. COMPLETED GRADUATE PROGRAM (M.S., M.A., PH.D., J.D., M.D., ETC.)
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 75
+COLOR RED 4 2 4 50
+LOCATE 5 9 1 Natural
+SELECT 9 1 1 0 OFF ON
+
+Q: Q73RACE -------------------------
+T:
+
+ Which of the following categories would you say best describes you?
+
+ [READ CATEGORIES, STOP WHEN RESPONDENT INDICATES A MATCH]
+T:5 11
+ 1. White
+ 2. Hispanic, or Latino origin
+ 3. Black or African American
+ 4. Asian or Asian American
+ 5. American Indian or Alaska Native
+ 6. Middle Eastern or North African
+ 7. Native Hawaiian or Other Pacific Islander
+ 8. Mixed [belongs to multiple categories]
+ 9. OTHER
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 85
+COLOR RED 4 2 4 75
+LOCATE 5 11 1 Natural
+SELECT 11 1 1 0 OFF ON
+
+Q: Q75RELIGION ------------------------
+T:
+
+ What, if any, is your religious preference?
+
+ [READ RESPONSES 1-5, EXCLUDING BRACKETED INFORMATION WHICH MAY BE OFFERED AS A PROBE IF NEEDED]
+T: 5 10
+ 1. Roman Catholic
+ 2. Evangelical Protestant [e.g., BAPTIST, "BORN AGAIN CHRISTIAN"]
+ 3. Mainline Protestant [e.g., LUTHERAN, METHODIST, EPISCOPALIAN]
+ 4. Some other religion [e.g., MUSLIM, JEWISH, BUDDHIST, HINDU, ETC.]
+ 5. Not religious or unaffiliated [e.g., ATHIEST, AGNOSTIC]
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 2 80
+COLOR RED 4 2 4 100
+LOCATE 5 7 1 Natural
+SELECT 7 1 1 0 OFF ON
+
+Q: Q76INCOME ---------------------------------------------------
+T:
+
+ Finally, would you please tell me the range which best represents
+ the total yearly income, before taxes, of all immediate family living
+ in your household? [IF NECESSARY, READ LIST UNTIL STOPPED]
+T: 7 10
+ 1. under $15,000
+ 2. $15,000 up to $24,999
+ 3. $25,000 up to $34,999
+ 4. $35,000 up to $49,999
+ 5. $50,000 up to $74,999
+ 6. $75,000 up to $99,999
+ 7. $100,000 or more
+ 88. DON'T KNOW
+ 99. REFUSED
+
+I:
+COLOR GREEN 2 2 3 72
+COLOR GREEN 4 2 4 20
+COLOR RED 4 21 4 72
+LOCATE 7 9 1 Natural
+SELECT 9 1 1 0 OFF ON
+
+Q: THANKSO -----------
+T:
+
+ I would like to thank you very much for your time and cooperation.
+ You have been very helpful. If you would like to see the results
+ of this survey you may contact the SCSU Survey Lab at St. Cloud
+ State University. Would you like the number or website?
+ 
+ [IF YES IT IS 320-308-3980 or WEBSITE: www.stcloudstate.edu/scsusurvey].
+ 
+ Good-bye!
+
+ [INTERVIEWER- BRING TO A DIRECTOR'S ATTENTION ANY PROBLEMS
+  WITH THE INTERVIEW, SUCH AS DIFFICULT QUESTIONS, CODING PROBLEMS, ETC.]
+	
+     GREAT JOB!  YOU GOT ANOTHER COMPLETE SURVEY!
+T:
+
+I:
+COLOR GREEN 2 2 6 70
+COLOR RED 7 2 7 75
+COLOR GREEN 9 2 9 12
+COLOR RED 11 2 12 75
+COLOR PURPLE 14 2 14 75
+KEY
+CTRLEND
+
+Q: THANKYOU --------------------------------------------------
+T:
+
+ Thank you for your time.
+
+I:
+COLOR GREEN 2 2 2 30
+KEY
+CTRLEND
+
