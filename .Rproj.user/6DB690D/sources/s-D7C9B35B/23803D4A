@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595439649112.000,
+    "dirty" : false,
+    "encoding" : "ISO8859-1",
+    "folds" : "",
+    "hash" : "12307710",
+    "id" : "23803D4A",
+    "lastKnownWriteTime" : 1595439704,
+    "last_content_update" : 1595439704342,
+    "path" : "C:/Users/stachowskia/Desktop/CPWR/SIOP2021/Analyses_MNResidents.Rmd",
+    "project_path" : "Analyses_MNResidents.Rmd",
+    "properties" : {
+        "cursorPosition" : "3,21",
+        "scrollLine" : "1",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

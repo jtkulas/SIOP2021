@@ -1,0 +1,50 @@
+---
+title: "Analyses_MNResidents"
+author: "Alicia Stachowski"
+date: "July 22, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Renata Model Test 
+
+```{r}
+# Hierarchical regression
+Data <- data.frame(X19FALL_MERGED_11042019_RECODE)
+JS <- Data$Q70D_SATISFACTION
+LS <- Data$Q70F_LIFE
+WLB <- Data$Q70H_BALANCE
+Race <- Data$Q73RACE
+Gender <- Data$GENDER
+
+Start1 <- lm(JS ~ WLB, data = Data)
+ONE <- lm(JS ~ WLB * Gender, data = Data)
+TWO <- lm(JS ~ WLB * Race, data = Data )
+
+Start2 <- lm(LS ~ WLB, data = Data)
+THREE <- lm(LS ~ WLB * Gender, data = Data )
+FOUR <- lm(LS ~ WLB * Race, data = Data )
+
+summary(Start1)
+summary(FOUR)
+
+Model1 <- lm(JS ~ WLB * Race, data = Data)
+Model2 <- lm(JS ~ WLB + Race, data = Data)
+anova(Model1, Model2)
+summary(Model1)$r.squared
+summary(Model2)$r.squared
+
+
+Model3 <- lm(LS ~ WLB * Race, data = Data )
+Model4 <- lm(LS ~ WLB + Race, data = Data )
+anova(Model3, Model4)
+summary(Model3)$r.squared
+summary(Model4)$r.squared
+
+
+
+
+```
